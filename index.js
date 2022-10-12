@@ -39,23 +39,32 @@ app.get('/api/:potentialTime', (req, res) => {
     let potentialTime = req.params.potentialTime;
     console.log(potentialTime)
 
-    let parsed = (potentialTime.includes('-')) ? new Date(potentialTime) : new Date(parseInt(potentialTime, 10));
+    let parsedDateString = new Date(potentialTime);
+    let parsedDateNumber = new Date(parseInt(potentialTime, 10));
 
-    if (parsed.toString != 'Invalid Date') {
-        let unixTimeFormat = parsed.getTime();
-        let utcTimeFormat = parsed.toUTCString();
+    if (parsedDateString != 'Invalid Date') {
+
+
+        let unixTimeFormat = parsedDateString.getTime();
+        let utcTimeFormat = parsedDateString.toUTCString();
+
+        res.json({ unix: unixTimeFormat, utc: utcTimeFormat })
+
+        
+
+
+    } else if (parsedDateNumber != 'Invalid Date') {
+        let unixTimeFormat = parsedDateNumber.getTime();
+        let utcTimeFormat = parsedDateNumber.toUTCString();
 
         res.json({ unix: unixTimeFormat, utc: utcTimeFormat })
     } else {
-        res.json({error: parsed.toString})
+        res.json({ error: 'Invalid Date' });
     }
-
     
 
 
 
-
-    res.json({time: parsed});
 });
 
 
